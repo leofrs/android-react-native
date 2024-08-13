@@ -11,7 +11,7 @@ export default function PublicRoutes() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
     </Stack.Navigator>
   );
 }

@@ -4,7 +4,7 @@ import PublicRoutes from "./Public";
 import PrivateClientRoutes from "./Private/Client";
 import PrivateAdminRoutes from "./Private/Admin";
 
-export default function Navigation() {
+export default function Navigation({ navigation }: any) {
   const user = useContext(UserContext);
 
   switch (user) {
