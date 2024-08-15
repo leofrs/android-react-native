@@ -6,7 +6,7 @@ import NossosServicos from "../../../components/nossosServicos";
 import UnidadesDeAtendimento from "../../../components/unidadesDeAtendimento";
 import ClientMenu from "../../../components/menu";
 
-export default function HomeClientScreen() {
+export default function HomeClientScreen({ navigation }: any) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#DBD8D9" }}>
       <View style={styles.headerContainer}>
@@ -26,7 +26,7 @@ export default function HomeClientScreen() {
 
       <NossosServicos />
       <UnidadesDeAtendimento />
-      <ClientMenu />
+      <ClientMenu navigation={navigation} />
     </SafeAreaView>
   );
 }
