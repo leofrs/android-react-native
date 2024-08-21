@@ -25,9 +25,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   header: {
-    marginLeft: 8,
-    fontWeight: "bold",
-    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "red",
+    width: "100%",
+    textAlign: "center",
   },
   listContent: {
     paddingBottom: 20,
