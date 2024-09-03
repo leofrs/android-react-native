@@ -1,49 +1,83 @@
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
 import {
-  StyleSheet,
+  SafeAreaView,
+  View,
   Text,
   TouchableOpacity,
-  View,
+  StyleSheet,
   TextInput,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [state, setState] = useState<string>("leitura");
-  const [anotacao, setAnotacao] = useState<string>();
+  const [anotacao, setAnotacao] = useState<string>("");
+
+  useEffect(() => {
+    (async () => {
+      const anotacaoLeitura = await AsyncStorage.getItem("anotacao");
+      if (anotacaoLeitura !== null) setAnotacao(anotacaoLeitura);
+    })();
+  }, []);
+
+  const setData = async () => {
+    try {
+      await AsyncStorage.setItem("anotacao", anotacao);
+    } catch (error) {
+      alert(`Error encontrado: ${error}`);
+    }
+  };
+
+  function handleState() {
+    setState("leitura");
+    setData();
+  }
+
   if (state === "leitura") {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <StatusBar style="dark" />
+        <StatusBar hidden />
         <View style={styles.header}>
-          <Text style={styles.headerText}>Anotações App</Text>
+          <Text style={styles.headerText}>Anotação App</Text>
         </View>
-        <View style={styles.anotacaoView}>
-          <Text style={styles.anotaocaoViewText}>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            vestibulum consequat justo vel condimentum. Duis vitae aliquam
-            magna. Praesent a dictum turpis, eu posuere arcu. Donec sed dictum
-            nunc. Morbi sed eros a nulla feugiat condimentum. Aliquam vitae
-            neque vitae risus luctus suscipit. Proin hendrerit quam sit amet
-            quam tristique venenatis. Duis scelerisque ullamcorper faucibus. In
-            quis vestibulum ex, non aliquam lacus. Nunc tristique vehicula
-            turpis. Pellentesque dignissim scelerisque tellus pellentesque
-            ultrices."
-          </Text>
-        </View>
+        {anotacao !== "" ? (
+          <View style={styles.anotacaoView}>
+            <Text style={styles.anotaocaoViewText}>{anotacao}</Text>
+          </View>
+        ) : (
+          <View style={styles.anotacaoView}>
+            <Text
+              style={{
+                color: "gray",
+                textAlign: "justify",
+                fontSize: 16,
+                padding: 16,
+                borderWidth: 1,
+                margin: 12,
+                borderRadius: 25,
+              }}
+            >
+              Sem anotação 😞
+            </Text>
+          </View>
+        )}
         <TouchableOpacity
           style={styles.btnAdd}
           onPress={() => setState("adicionando")}
         >
-          <Text style={styles.btnAddText}>+</Text>
+          {anotacao === "" ? (
+            <Text style={styles.btnAddText}>Adicionar</Text>
+          ) : (
+            <Text style={styles.btnAddText}>Editar</Text>
+          )}
         </TouchableOpacity>
       </SafeAreaView>
     );
   } else if (state === "adicionando") {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <StatusBar style="dark" />
+        <StatusBar hidden />
         <View
           style={{
             width: "100%",
@@ -61,7 +95,7 @@ export default function App() {
               paddingHorizontal: 8,
             }}
           >
-            Anotações App
+            Anotação App
           </Text>
           <Text
             style={{
@@ -79,7 +113,7 @@ export default function App() {
         <View style={{ marginVertical: 4, padding: 14 }}>
           <TextInput
             multiline={true}
-            numberOfLines={5}
+            numberOfLines={30}
             value={anotacao}
             onChangeText={(newText) => setAnotacao(newText)}
             style={{
@@ -88,13 +122,19 @@ export default function App() {
               borderRadius: 25,
               padding: 14,
             }}
+            placeholder="Insira aqui o seu texto"
+            autoFocus={true}
           />
         </View>
         <TouchableOpacity
           style={styles.btnSalvar}
-          onPress={() => setState("adicionando")}
+          onPress={() => handleState()}
         >
-          <Text style={styles.btnSalvarText}>Salvar</Text>
+          {anotacao !== "" ? (
+            <Text style={styles.btnSalvarText}>Salvar</Text>
+          ) : (
+            <Text style={styles.btnSalvarText}>Editar</Text>
+          )}
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -132,13 +172,13 @@ const styles = StyleSheet.create({
     bottom: 25,
     right: 25,
     backgroundColor: "#069",
-    padding: 25,
-    borderRadius: 50,
+    padding: 16,
+    borderRadius: 8,
   },
   btnAddText: {
     position: "relative",
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 16,
     color: "white",
   },
   btnSalvar: {
@@ -147,7 +187,7 @@ const styles = StyleSheet.create({
     right: 25,
     backgroundColor: "#069",
     padding: 16,
-    borderRadius: 50,
+    borderRadius: 8,
   },
   btnSalvarText: {
     position: "relative",
