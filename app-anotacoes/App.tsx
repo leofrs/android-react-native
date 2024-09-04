@@ -1,5 +1,4 @@
 import {
-  SafeAreaView,
   View,
   Text,
   TouchableOpacity,
@@ -9,6 +8,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const [state, setState] = useState<string>("leitura");
