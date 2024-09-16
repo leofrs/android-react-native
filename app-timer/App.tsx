@@ -1,7 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type Alarm = {
   selected: boolean;
@@ -38,18 +38,24 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
+
       <Text style={{ fontSize: 24, fontWeight: "600" }}>
         Selecione o seu tempo
       </Text>
-      <View style={{ flexDirection: "row" }}>
+
+      <View style={{ flexDirection: "row", gap: 16, marginVertical: 32 }}>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
             alignContent: "center",
+            alignItems: "center",
+            borderWidth: 1,
+            borderRadius: 24,
+            width: "50%",
           }}
         >
-          <Text>Minutos: </Text>
+          <Text>Minutos: {minuts}</Text>
           <Picker
             selectedValue={minuts}
             onValueChange={(value) => setMinuts(value)}
@@ -62,8 +68,17 @@ export default function App() {
             })}
           </Picker>
         </View>
-        <View>
-          <Text>Segundos: </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            borderWidth: 1,
+            borderRadius: 24,
+            width: "50%",
+          }}
+        >
+          <Text>Segundos: {seconds}</Text>
           <Picker
             selectedValue={seconds}
             onValueChange={(value) => setSeconds(value)}
@@ -78,6 +93,65 @@ export default function App() {
           </Picker>
         </View>
       </View>
+
+      <View>
+        <Text style={{ fontSize: 24, fontWeight: "600", textAlign: "center" }}>
+          Selecione o seu alarme
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 16,
+            marginVertical: 32,
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderRadius: 24,
+              width: "33%",
+              padding: 8,
+            }}
+          >
+            <Text style={{ textAlign: "center" }}>Alarme 1</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderRadius: 24,
+              width: "33%",
+              padding: 8,
+            }}
+          >
+            <Text style={{ textAlign: "center" }}>Alarme 2</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderRadius: 24,
+              width: "33%",
+              padding: 8,
+            }}
+          >
+            <Text style={{ textAlign: "center" }}>Alarme 3</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          bottom: 32,
+          right: 32,
+          borderWidth: 1,
+          borderRadius: 25,
+          padding: 32,
+        }}
+      >
+        <Text>Iniciar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -88,5 +162,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#2547",
     alignItems: "center",
     justifyContent: "center",
+    padding: 32,
+    width: "100%",
+    height: "100%",
+    borderWidth: 2,
   },
 });
